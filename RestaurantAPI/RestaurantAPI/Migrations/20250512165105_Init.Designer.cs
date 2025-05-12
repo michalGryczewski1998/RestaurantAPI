@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RestaurantAPI.Entities;
+using RestaurantAPI.Model.DatabaseConnection;
+
 
 #nullable disable
 
 namespace RestaurantAPI.Migrations
 {
-    [DbContext(typeof(RestauranrDbContext))]
+    [DbContext(typeof(RestaurantDbContext))]
     [Migration("20250512165105_Init")]
     partial class Init
     {

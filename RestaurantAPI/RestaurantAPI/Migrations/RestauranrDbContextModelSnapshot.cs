@@ -3,13 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RestaurantAPI.Entities;
+using RestaurantAPI.Model.DatabaseConnection;
+
 
 #nullable disable
 
 namespace RestaurantAPI.Migrations
 {
-    [DbContext(typeof(RestauranrDbContext))]
+    [DbContext(typeof(RestaurantDbContext))]
     partial class RestauranrDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

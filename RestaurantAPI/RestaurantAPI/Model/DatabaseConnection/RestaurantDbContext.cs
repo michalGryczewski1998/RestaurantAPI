@@ -1,15 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RestaurantAPI.Model.Entities;
 
-namespace RestaurantAPI.Entities
+namespace RestaurantAPI.Model.DatabaseConnection
 {
-    public class RestauranrDbContext : DbContext
+    public class RestaurantDbContext : DbContext
     {
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Dish> Dishes { get; set; }
         private readonly IConfiguration _configuration;
 
-        public RestauranrDbContext(IConfiguration configuration) => _configuration = configuration;
+        public RestaurantDbContext(IConfiguration configuration) => _configuration = configuration;
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var connectionString = _configuration["ConnectionStrings:Default"];

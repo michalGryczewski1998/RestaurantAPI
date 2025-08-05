@@ -1,5 +1,6 @@
 using RestaurantAPI.Model.DatabaseConnection;
 using RestaurantAPI.Model.Seed;
+using System.Reflection;
 
 internal class Program
 {
@@ -12,6 +13,7 @@ internal class Program
         builder.Services.AddControllers();
         builder.Services.AddDbContext<RestaurantDbContext>();
         builder.Services.AddScoped<RestaurantSeeder>();
+        builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
         var app = builder.Build();
 

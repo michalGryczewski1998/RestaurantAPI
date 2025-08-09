@@ -76,13 +76,8 @@ namespace RestaurantAPI.Services
 
             if (restaurant == null) return false;
 
-            restaurant.Name = resraurantRequest.Name;
-            restaurant.Description = resraurantRequest.Description;
-            restaurant.Category = resraurantRequest.Category;
-            restaurant.HasDelivery = resraurantRequest.HasDelivery;
-
-            _dbContext.Restaurants.Update(restaurant);
-            _dbContext.SaveChanges();
+            restaurant.UpdateFrom(resraurantRequest);
+            _dbContext .SaveChanges();
 
             return true;
         }

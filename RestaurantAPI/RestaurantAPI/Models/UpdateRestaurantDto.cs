@@ -2,13 +2,13 @@
 
 namespace RestaurantAPI.Models
 {
-    public class UpdateRestaurantDto
+    public record class UpdateRestaurantDto
     {
         [Required]
         [MaxLength(50)]
-        public string Name { get; set; } 
-        public string Description { get; set; } 
-        public string Category { get; set; } 
-        public bool HasDelivery { get; set; }
+        public string Name { get; init; } 
+        public string Description { get; init; } 
+        public string Category { get; init; } 
+        public bool HasDelivery { get; init; }
     }
 }

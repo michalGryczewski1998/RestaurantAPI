@@ -1,4 +1,6 @@
-﻿namespace RestaurantAPI.Model.Entities
+﻿using RestaurantAPI.Models;
+
+namespace RestaurantAPI.Model.Entities
 {
     public class Restaurant
     {
@@ -12,5 +14,13 @@
         public int AdressId { get; set; }
         public virtual Address Adress { get; set; }
         public virtual List<Dish> Dishes { get; set; }
+
+        public void UpdateFrom(UpdateRestaurantDto dto)
+        {
+            Name = dto.Name;
+            Description = dto.Description;
+            Category = dto.Category;
+            HasDelivery = dto.HasDelivery;
+        }
     }
 }

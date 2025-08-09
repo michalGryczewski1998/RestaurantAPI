@@ -30,8 +30,8 @@ namespace RestaurantAPI.Model.Seed
                     Description = "Kentaky Fried Chicken",
                     Category = "Fast food",
                     HasDelivery = true,
-                    ContackEmail = "kfc@gmail.com",
-                    ContacNumber = "+48987441265",
+                    ContactEmail = "kfc@gmail.com",
+                    ContactNumber = "+48987441265",
                     Dishes = new List<Dish>()
                     {
                         new Dish
@@ -73,8 +73,8 @@ namespace RestaurantAPI.Model.Seed
                     Description = "Burger",
                     Category = "Fast food",
                     HasDelivery = true,
-                    ContackEmail = "mcdonalds@gmail.com",
-                    ContacNumber = "+41184442265",
+                    ContactEmail = "mcdonalds@gmail.com",
+                    ContactNumber = "+41184442265",
                     Dishes = new List<Dish>()
                     {
                         new Dish

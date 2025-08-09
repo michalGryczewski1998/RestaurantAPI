@@ -1,5 +1,7 @@
+using RestaurantAPI.Interfaces;
 using RestaurantAPI.Model.DatabaseConnection;
 using RestaurantAPI.Model.Seed;
+using RestaurantAPI.Services;
 using System.Reflection;
 
 internal class Program
@@ -15,6 +17,7 @@ internal class Program
         builder.Services.AddScoped<RestaurantSeeder>();
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
+        builder.Services.AddScoped<IRestaurantService, RestaurantService>();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

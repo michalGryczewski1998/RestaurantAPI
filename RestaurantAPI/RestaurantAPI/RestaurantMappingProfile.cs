@@ -4,6 +4,7 @@ using RestaurantAPI.Models;
 
 namespace RestaurantAPI
 {
+    // Profile mapowania
     public class RestaurantMappingProfile : Profile
     {
         /// <summary>
@@ -25,6 +26,14 @@ namespace RestaurantAPI
             /// Typy i nazwy w tym wypadku zgadzają się więc taki zapis starczy
             /// </summary>
             CreateMap<Dish, DishDto>();
+
+            /// <summary>
+            /// Tworzymy nowy obiekt adresu
+            /// </summary>
+            CreateMap<CreateRestaurantDto, Restaurant>()
+                .ForMember(r => r.Adress, c => c.MapFrom(dto => new Address()
+                { City = dto.City, PostalCode = dto.PostalCode, Street = dto.Street }));
+
         }
     }
 }

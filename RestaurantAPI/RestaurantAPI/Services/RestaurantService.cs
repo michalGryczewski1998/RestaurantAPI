@@ -11,15 +11,18 @@ namespace RestaurantAPI.Services
     {
         private readonly RestaurantDbContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly ILogger<RestaurantService> _logger;
 
-        public RestaurantService(RestaurantDbContext dbContext, IMapper mapper)
+        public RestaurantService(RestaurantDbContext dbContext, IMapper mapper, ILogger<RestaurantService> logger)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public bool Delete(int id)
         {
+            _logger.LogWarning($"Restauracja z ID {id} wywołanie metody DELETE");
             var restaurant = _dbContext
                 .Restaurants
                 .FirstOrDefault(x => x.Id == id);
@@ -28,6 +31,8 @@ namespace RestaurantAPI.Services
 
             _dbContext.Restaurants.Remove(restaurant);
             _dbContext.SaveChanges();
+
+            _logger.LogWarning($"Restauracja z ID {id} została usunięta");
 
             return true;
 

@@ -1,3 +1,4 @@
+using NLog.Web;
 using RestaurantAPI.Interfaces;
 using RestaurantAPI.Model.DatabaseConnection;
 using RestaurantAPI.Model.Seed;
@@ -16,6 +17,8 @@ internal class Program
         builder.Services.AddDbContext<RestaurantDbContext>();
         builder.Services.AddScoped<RestaurantSeeder>();
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+        builder.UseNLog();
 
         builder.Services.AddScoped<IRestaurantService, RestaurantService>();
         var app = builder.Build();

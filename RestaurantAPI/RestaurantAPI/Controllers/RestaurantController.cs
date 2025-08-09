@@ -31,9 +31,9 @@ namespace RestaurantAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            _restaurantService.Create(dto);
+            var resId = _restaurantService.Create(dto);
 
-            return Created($"/api/restaurant/", null);
+            return Created($"/api/restaurant/{resId}", null);
         }
 
         [HttpGet]

@@ -8,6 +8,6 @@ namespace RestaurantAPI.Interfaces
         public IEnumerable<RestaurantDto> GetAll();
         public int Create(CreateRestaurantDto dto);
         public bool Delete(int id);
-
+        public bool Update(UpdateRestaurantDto resraurant, int id);
     }
 }

@@ -23,6 +23,19 @@ namespace RestaurantAPI.Controllers
             _restaurantService = restaurantService;
         }
 
+        [HttpPut("update/{Id}")]
+        public ActionResult Update([FromBody] UpdateRestaurantDto resraurant, [FromRoute] int Id)
+        {
+            var res = _restaurantService.Update(resraurant, Id);
+
+            if (res)
+            {
+                return NoContent();
+            }
+             return Ok();
+
+        }
+
         [HttpDelete("{Id}")]
         public ActionResult Delete([FromRoute] int Id)
         {

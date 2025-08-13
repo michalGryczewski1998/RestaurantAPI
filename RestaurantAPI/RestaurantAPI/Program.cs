@@ -1,5 +1,6 @@
 using NLog.Web;
 using RestaurantAPI.Interfaces;
+using RestaurantAPI.Middleware;
 using RestaurantAPI.Model.DatabaseConnection;
 using RestaurantAPI.Model.Seed;
 using RestaurantAPI.Services;
@@ -17,6 +18,7 @@ internal class Program
         builder.Services.AddDbContext<RestaurantDbContext>();
         builder.Services.AddScoped<RestaurantSeeder>();
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
+        builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
         builder.UseNLog();
 
@@ -41,6 +43,7 @@ internal class Program
                 Console.WriteLine($"B³¹d podczas seedowania danych: {ex.Message}");
             }
         }
+        app.UseMiddleware<ErrorHandlingMiddleware>();
 
         app.UseHttpsRedirection();
 

@@ -2,10 +2,14 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RestaurantAPI.Information;
 using RestaurantAPI.Interfaces;
 using RestaurantAPI.Model.DatabaseConnection;
 using RestaurantAPI.Model.Entities;
 using RestaurantAPI.Models;
+using System.Runtime.InteropServices;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace RestaurantAPI.Controllers
 {
@@ -62,6 +66,6 @@ namespace RestaurantAPI.Controllers
             var restaurant = _restaurantService.GetById(id);
 
             return Ok(restaurant);
-        }
+        }       
     }
 }

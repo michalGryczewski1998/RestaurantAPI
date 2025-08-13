@@ -19,6 +19,7 @@ internal class Program
         builder.Services.AddScoped<RestaurantSeeder>();
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
         builder.Services.AddScoped<ErrorHandlingMiddleware>();
+        builder.Services.AddSwaggerGen();
 
         builder.UseNLog();
 
@@ -46,6 +47,12 @@ internal class Program
         app.UseMiddleware<ErrorHandlingMiddleware>();
 
         app.UseHttpsRedirection();
+
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "RestaurantAPI");
+        });
 
         app.UseAuthorization();
 

@@ -19,6 +19,7 @@ internal class Program
         builder.Services.AddScoped<RestaurantSeeder>();
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
         builder.Services.AddScoped<ErrorHandlingMiddleware>();
+        builder.Services.AddScoped<RequestTimeMiddleware>();
         builder.Services.AddSwaggerGen();
 
         builder.UseNLog();
@@ -45,6 +46,7 @@ internal class Program
             }
         }
         app.UseMiddleware<ErrorHandlingMiddleware>();
+        app.UseMiddleware<RequestTimeMiddleware>();
 
         app.UseHttpsRedirection();
 

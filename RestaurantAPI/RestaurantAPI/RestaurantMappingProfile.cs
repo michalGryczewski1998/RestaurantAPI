@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using RestaurantAPI.Model.Entities;
-using RestaurantAPI.Models;
+using RestaurantAPI.Model.Models;
 
 namespace RestaurantAPI
 {
@@ -33,6 +33,12 @@ namespace RestaurantAPI
             CreateMap<CreateRestaurantDto, Restaurant>()
                 .ForMember(r => r.Adress, c => c.MapFrom(dto => new Address()
                 { City = dto.City, PostalCode = dto.PostalCode, Street = dto.Street }));
+
+            /// <summary>
+            /// Mapujemy z CreateDishDto na Dish
+            /// Nie precyzujemy mapowania, z powodu pokrywania się pól
+            /// </summary>
+            CreateMap<CreateDishDto, Dish>();
 
         }
     }

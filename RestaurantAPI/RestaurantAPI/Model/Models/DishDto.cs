@@ -1,4 +1,4 @@
-﻿namespace RestaurantAPI.Models
+﻿namespace RestaurantAPI.Model.Models
 {
     public class DishDto
     {

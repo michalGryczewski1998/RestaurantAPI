@@ -1,6 +1,6 @@
 ﻿using RestaurantAPI.Model.Entities;
 
-namespace RestaurantAPI.Models
+namespace RestaurantAPI.Model.Models
 {
     public class RestaurantDto
     {

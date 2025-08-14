@@ -6,7 +6,7 @@ using RestaurantAPI.Information;
 using RestaurantAPI.Interfaces;
 using RestaurantAPI.Model.DatabaseConnection;
 using RestaurantAPI.Model.Entities;
-using RestaurantAPI.Models;
+using RestaurantAPI.Model.Models;
 using System.Runtime.InteropServices;
 using System.Xml;
 using System.Xml.Serialization;

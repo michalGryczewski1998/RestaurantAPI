@@ -25,6 +25,7 @@ internal class Program
         builder.UseNLog();
 
         builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+        builder.Services.AddScoped<IDishService, DishService>();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

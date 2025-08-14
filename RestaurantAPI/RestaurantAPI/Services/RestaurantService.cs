@@ -4,7 +4,7 @@ using RestaurantAPI.Exceptions;
 using RestaurantAPI.Interfaces;
 using RestaurantAPI.Model.DatabaseConnection;
 using RestaurantAPI.Model.Entities;
-using RestaurantAPI.Models;
+using RestaurantAPI.Model.Models;
 
 namespace RestaurantAPI.Services
 {

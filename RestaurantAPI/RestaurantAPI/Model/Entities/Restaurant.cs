@@ -1,4 +1,4 @@
-﻿using RestaurantAPI.Models;
+﻿using RestaurantAPI.Model.Models;
 
 namespace RestaurantAPI.Model.Entities
 {

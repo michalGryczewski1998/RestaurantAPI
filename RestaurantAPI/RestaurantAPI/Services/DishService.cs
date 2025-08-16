@@ -23,11 +23,6 @@ namespace RestaurantAPI.Services
         {
             var restaurant = CzyRestauracjaIstnieje(restaurantId);
 
-            if (!restaurant)
-            {
-                throw new NotFoundException($"Nie znaleziono restauracji o ID: {restaurantId}");
-            }
-
             var dishEntity = _mapper.Map<Dish>(dto);
             dishEntity.RestaurantId = restaurantId;
 
@@ -40,11 +35,6 @@ namespace RestaurantAPI.Services
         public DishDto GetById(int restaurantId, int dishId)
         {
             var restaurant = CzyRestauracjaIstnieje(restaurantId);
-
-            if (!restaurant)
-            {
-                throw new NotFoundException($"Nie znaleziono restauracji o ID: {restaurantId}");
-            }
 
             var dish = _context.Dishes.FirstOrDefault(x => x.Id == dishId);
 
@@ -60,32 +50,33 @@ namespace RestaurantAPI.Services
 
         public List<DishDto> GetAll(int restaurantId)
         {
-            var restaurant = _context
-                .Restaurants
-                .Include(x => x.Dishes)
-                .FirstOrDefault(x => x.Id == restaurantId);
-
-            if(restaurant is null)
-            {
-                throw new NotFoundException($"Nie znaleziono restauracji o ID: {restaurantId}");
-            }
+            var restaurant = CzyRestauracjaIstnieje(restaurantId);
 
             var dishDto = _mapper.Map<List<DishDto>>(restaurant.Dishes);
 
             return dishDto;
         }
 
-        private bool CzyRestauracjaIstnieje(int id)
+        public void RemoveAll(int restaurantId)
+        {
+            var restaurant = CzyRestauracjaIstnieje(restaurantId);
+
+            _context.RemoveRange(restaurant.Dishes);
+            _context.SaveChanges();
+        }
+
+        private Restaurant CzyRestauracjaIstnieje(int id)
         {
             var restaurant = _context.Restaurants
+                .Include(x => x.Dishes)
                 .FirstOrDefault(x => x.Id == id);
 
             if (restaurant == null)
             {
-                return false;
+                throw new NotFoundException($"Nie znaleziono restauracji o ID: {id}");
             }
 
-            return true;
+            return restaurant;
         }
     }
 }

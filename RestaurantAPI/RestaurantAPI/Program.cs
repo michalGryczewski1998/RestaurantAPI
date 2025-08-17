@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
 using NLog.Web;
 using RestaurantAPI.Interfaces;
 using RestaurantAPI.Middleware;
 using RestaurantAPI.Model.DatabaseConnection;
+using RestaurantAPI.Model.Entities;
 using RestaurantAPI.Model.Seed;
 using RestaurantAPI.Services;
 using System.Reflection;
@@ -20,6 +22,7 @@ internal class Program
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
         builder.Services.AddScoped<ErrorHandlingMiddleware>();
         builder.Services.AddScoped<RequestTimeMiddleware>();
+        builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         builder.Services.AddSwaggerGen();
 
         builder.UseNLog();

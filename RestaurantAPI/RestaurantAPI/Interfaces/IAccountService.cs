@@ -1,9 +1,12 @@
-﻿using RestaurantAPI.Model.Models;
+﻿using RestaurantAPI.Model.Entities;
+using RestaurantAPI.Model.Models;
 
 namespace RestaurantAPI.Interfaces
 {
     public interface IAccountService
     {
         void RegisterUser(RegisterUserDto dto);
+        string FunkcjaHashujaca(User user, string password);
+        Dictionary<string, bool> WalidacjaUzytkownika(User user);
     }
 }

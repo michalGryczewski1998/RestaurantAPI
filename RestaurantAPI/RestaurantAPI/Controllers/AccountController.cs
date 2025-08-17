@@ -19,7 +19,7 @@ namespace RestaurantAPI.Controllers
         public ActionResult RegisterUser([FromBody] RegisterUserDto dto)
         {
             _service.RegisterUser(dto);
-            return Ok();
+            return Ok($"Zarejestrowano użytkownika {dto.FirstName}");
         }
     }
 }

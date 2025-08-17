@@ -23,6 +23,11 @@ namespace RestaurantAPI.Middleware
                 context.Response.StatusCode = 404;
                 await context.Response.WriteAsync(nfEx.Message);
             }
+            catch (NotCreateAccountException ncEx)
+            {
+                context.Response.StatusCode = 404;
+                await context.Response.WriteAsync(ncEx.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);

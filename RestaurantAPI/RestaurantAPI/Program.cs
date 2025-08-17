@@ -26,6 +26,7 @@ internal class Program
 
         builder.Services.AddScoped<IRestaurantService, RestaurantService>();
         builder.Services.AddScoped<IDishService, DishService>();
+        builder.Services.AddScoped<IAccountService, AccountService>();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

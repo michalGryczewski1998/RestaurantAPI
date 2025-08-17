@@ -8,6 +8,9 @@ namespace RestaurantAPI.Model.DatabaseConnection
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Dish> Dishes { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+
         private readonly IConfiguration _configuration;
 
         public RestaurantDbContext(IConfiguration configuration) => _configuration = configuration;
@@ -29,6 +32,19 @@ namespace RestaurantAPI.Model.DatabaseConnection
                 .Property(x => x.Name)
                 .IsRequired()
                 .HasMaxLength(50);
+
+            modelBuilder.Entity<User>()
+                .Property(x => x.Email)
+                .IsRequired();
+
+            modelBuilder.Entity<Role>(c =>
+            {
+                c.Property(x => x.Aktualne)
+                .IsRequired();
+
+                c.Property(x => x.Name)
+                .IsRequired();
+            });
         }
     }
 }

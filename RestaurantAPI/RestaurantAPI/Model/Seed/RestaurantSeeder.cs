@@ -12,12 +12,43 @@ namespace RestaurantAPI.Model.Seed
         }
         public void Seed() 
         {
+            if (!_dbContext.Roles.Any())
+            {
+                var roles = GetRols();
+                _dbContext.Roles.AddRange(roles);
+                _dbContext.SaveChanges();
+            }
+
             if (_dbContext.Database.CanConnect() && !_dbContext.Restaurants.Any())
             {
                 var restaurants = GetRestaurants();
                 _dbContext.Restaurants.AddRange(restaurants);
                 _dbContext.SaveChanges();
             }
+        }
+
+        private IEnumerable<Role> GetRols()
+        {
+            var roles = new List<Role>
+            {
+                new Role()
+                {
+                    Aktualne = true,
+                    Name = "User"
+                },
+                new Role()
+                {
+                    Aktualne = true,
+                    Name = "Manager"
+                },
+                new Role()
+                {
+                    Aktualne = true,
+                    Name = "Admin"
+                }
+            };
+
+            return roles;
         }
 
         private IEnumerable<Restaurant> GetRestaurants()

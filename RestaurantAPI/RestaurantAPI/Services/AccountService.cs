@@ -12,12 +12,14 @@ namespace RestaurantAPI.Services
         private readonly RestaurantDbContext _dbContext;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly ILogger _loger;
+        private readonly IWalidacjaUzytkownika _walidacja;
 
-        public AccountService(RestaurantDbContext dbContext, IPasswordHasher<User> passwordHasher, ILogger<AccountService> loger)
+        public AccountService(RestaurantDbContext dbContext, IPasswordHasher<User> passwordHasher, ILogger<AccountService> loger, IWalidacjaUzytkownika walidacja)
         {
             _dbContext = dbContext;
             _passwordHasher = passwordHasher;
             _loger = loger;
+            _walidacja = walidacja;
         }
 
         public string FunkcjaHashujaca(User user, string password)
@@ -40,7 +42,7 @@ namespace RestaurantAPI.Services
 
             newUser.PassworldHash = FunkcjaHashujaca(newUser, dto.Password);
 
-            var walidacja = WalidacjaUzytkownika(newUser);
+            var walidacja = _walidacja.WalidacjaUzytkownika(newUser);
 
             if (walidacja.Any(x => x.Item2))
             {
@@ -56,31 +58,5 @@ namespace RestaurantAPI.Services
             _dbContext.SaveChanges();
         }
 
-        public List<Tuple<string, bool>> WalidacjaUzytkownika(User user)
-        {
-            var status = new List<Tuple<string, bool>>();
-
-            var istniejeUzytkownikNaTenEmail = _dbContext.Users
-                .Where(x => x.Email == user.Email);
-
-            var istniejeUzytkownikNaTenNumerTelefonu = _dbContext.Users
-                .Where(x => x.PhoneNumber == user.PhoneNumber);
-
-            if (istniejeUzytkownikNaTenEmail.Any())
-            {
-                status.Add(
-                    new Tuple<string,bool>($"Użytkownik {user.FirstName} musi podać inny adres E-Mail, podany adres {user.Email} jest używany !", true)
-                    );
-            }
-
-            if (istniejeUzytkownikNaTenNumerTelefonu.Any())
-            {
-                status.Add(
-                    new Tuple<string,bool>($"Użytkownik {user.FirstName} musi podać inny numer telefonu, podany numer {user.PhoneNumber} jest używany !", true)
-                    );
-            }
-
-            return status;
-        }
     }
 }

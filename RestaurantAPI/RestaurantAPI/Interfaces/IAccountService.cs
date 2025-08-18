@@ -7,6 +7,5 @@ namespace RestaurantAPI.Interfaces
     {
         void RegisterUser(RegisterUserDto dto);
         string FunkcjaHashujaca(User user, string password);
-        List<Tuple<string, bool>> WalidacjaUzytkownika(User user);
     }
 }

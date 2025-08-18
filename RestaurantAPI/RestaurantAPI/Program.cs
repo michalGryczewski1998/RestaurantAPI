@@ -1,10 +1,14 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using NLog.Web;
 using RestaurantAPI.Interfaces;
 using RestaurantAPI.Middleware;
 using RestaurantAPI.Model.DatabaseConnection;
 using RestaurantAPI.Model.Entities;
+using RestaurantAPI.Model.Models;
 using RestaurantAPI.Model.Seed;
+using RestaurantAPI.Model.Validators;
 using RestaurantAPI.Services;
 using System.Reflection;
 
@@ -16,13 +20,14 @@ internal class Program
 
         // Add services to the container.
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers().AddFluentValidation();
         builder.Services.AddDbContext<RestaurantDbContext>();
         builder.Services.AddScoped<RestaurantSeeder>();
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
         builder.Services.AddScoped<ErrorHandlingMiddleware>();
         builder.Services.AddScoped<RequestTimeMiddleware>();
         builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+        builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
         builder.Services.AddSwaggerGen();
 
         builder.UseNLog();
@@ -30,6 +35,7 @@ internal class Program
         builder.Services.AddScoped<IRestaurantService, RestaurantService>();
         builder.Services.AddScoped<IDishService, DishService>();
         builder.Services.AddScoped<IAccountService, AccountService>();
+        builder.Services.AddScoped<IWalidacjaUzytkownika, RegisterUserDtoValidator>();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

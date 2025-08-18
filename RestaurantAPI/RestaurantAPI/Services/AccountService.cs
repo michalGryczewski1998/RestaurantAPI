@@ -42,23 +42,23 @@ namespace RestaurantAPI.Services
 
             var walidacja = WalidacjaUzytkownika(newUser);
 
-            if (walidacja.Any(x => x.Value == true))
+            if (walidacja.Any(x => x.Item2))
             {
-                foreach (var x in walidacja.Where(x => x.Value == true))
+                foreach (var x in walidacja.Where(x => x.Item2 == true))
                 {
-                    _loger.LogWarning(x.Key);
+                    _loger.LogWarning(x.Item1);
                 }
 
-                throw new NotCreateAccountException(string.Join(Environment.NewLine, walidacja.Keys));
+                throw new NotCreateAccountException(string.Join(Environment.NewLine, walidacja.Select(x => x.Item1)));
             }
 
             _dbContext.Users.Add(newUser);
             _dbContext.SaveChanges();
         }
 
-        public Dictionary<string, bool> WalidacjaUzytkownika(User user)
+        public List<Tuple<string, bool>> WalidacjaUzytkownika(User user)
         {
-            var status = new Dictionary<string, bool>();
+            var status = new List<Tuple<string, bool>>();
 
             var istniejeUzytkownikNaTenEmail = _dbContext.Users
                 .Where(x => x.Email == user.Email);
@@ -68,12 +68,16 @@ namespace RestaurantAPI.Services
 
             if (istniejeUzytkownikNaTenEmail.Any())
             {
-                status.Add($"Użytkownik {user.FirstName} musi podać inny adres E-Mail, podany adres {user.Email} jest używany !", true);
+                status.Add(
+                    new Tuple<string,bool>($"Użytkownik {user.FirstName} musi podać inny adres E-Mail, podany adres {user.Email} jest używany !", true)
+                    );
             }
 
             if (istniejeUzytkownikNaTenNumerTelefonu.Any())
             {
-                status.Add($"Użytkownik {user.FirstName} musi podać inny numer telefonu, podany numer {user.PhoneNumber} jest używany !", true);
+                status.Add(
+                    new Tuple<string,bool>($"Użytkownik {user.FirstName} musi podać inny numer telefonu, podany numer {user.PhoneNumber} jest używany !", true)
+                    );
             }
 
             return status;

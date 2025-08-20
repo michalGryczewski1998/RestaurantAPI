@@ -17,6 +17,7 @@ namespace RestaurantAPI.Model.Validators
             RuleFor(x => x.FirstName)
                 .NotEmpty()
                 .NotNull()
+                .MinimumLength(3)
                 .Matches(@"^[\p{L}]+$") // tylko litery (Unicode)
                 .WithMessage("Pole nie może być puste, i musi zawierać tylko litery.");
             RuleFor(x => x.Email)

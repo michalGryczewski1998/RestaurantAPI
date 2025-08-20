@@ -48,7 +48,7 @@ namespace RestaurantAPI.Services
             {
                 foreach (var x in walidacja.Where(x => x.Item2 == true))
                 {
-                    _loger.LogWarning(x.Item1);
+                    _loger.LogWarning(message: x.Item1);
                 }
 
                 throw new NotCreateAccountException(string.Join(Environment.NewLine, walidacja.Select(x => x.Item1)));

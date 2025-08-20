@@ -14,7 +14,11 @@ namespace RestaurantAPI.Model.Validators
         public RegisterUserDtoValidator(RestaurantDbContext dbContext)
         {
             _dbContext = dbContext;
-
+            RuleFor(x => x.FirstName)
+                .NotEmpty()
+                .NotNull()
+                .Matches(@"^[\p{L}]+$") // tylko litery (Unicode)
+                .WithMessage("Pole nie może być puste, i musi zawierać tylko litery.");
             RuleFor(x => x.Email)
                 .NotEmpty()
                 .EmailAddress();

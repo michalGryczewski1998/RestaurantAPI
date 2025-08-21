@@ -28,6 +28,7 @@ internal class Program
         builder.Services.AddScoped<RequestTimeMiddleware>();
         builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
+        builder.Services.AddScoped<IValidator<CreateRestaurantDto>, CreateRestaurantValidator>();
         builder.Services.AddSwaggerGen();
 
         builder.UseNLog();

@@ -28,6 +28,7 @@ namespace RestaurantAPI.Model.Validators
             RuleFor(x =>x.ConfirmPassword)
                 .Equal(c => c.Password);
             RuleFor(x => x.PhoneNumber)
+                .NotEmpty()
                 .Matches(@"^\+?[0-9]{9,15}$")
                 .WithMessage("Niepoprawny format numeru telefonu.");
             RuleFor(x => x.Nationality)

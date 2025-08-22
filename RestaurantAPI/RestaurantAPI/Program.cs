@@ -29,6 +29,7 @@ internal class Program
         builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
         builder.Services.AddScoped<IValidator<CreateRestaurantDto>, CreateRestaurantValidator>();
+        builder.Services.AddScoped<IValidator<CreateDishDto>, CreateDishValidator>();
         builder.Services.AddSwaggerGen();
 
         builder.UseNLog();

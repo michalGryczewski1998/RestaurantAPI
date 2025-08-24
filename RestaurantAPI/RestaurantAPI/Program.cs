@@ -1,7 +1,9 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using NLog.Web;
+using RestaurantAPI.Authentication;
 using RestaurantAPI.Interfaces;
 using RestaurantAPI.Middleware;
 using RestaurantAPI.Model.DatabaseConnection;
@@ -11,6 +13,7 @@ using RestaurantAPI.Model.Seed;
 using RestaurantAPI.Model.Validators;
 using RestaurantAPI.Services;
 using System.Reflection;
+using System.Text;
 
 internal class Program
 {
@@ -19,6 +22,29 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+
+        var authenticationSettings = new AuthenticationSettings();
+        builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
+
+        builder.Services.AddAuthentication(option =>
+        {
+            option.DefaultAuthenticateScheme = "Bearer";
+            option.DefaultScheme = "Bearer";
+            option.DefaultChallengeScheme = "Bearer";
+        }).AddJwtBearer(conf =>
+        {
+            conf.RequireHttpsMetadata = false; // nie wymuszamy przez klienta tylko protoko³u https
+            conf.SaveToken = true; // token powinien zostaæ zapisany po stronie serwera, do celów autentykacji
+            // !!  PARAMETRY WALIDACJI !!
+            conf.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            {
+                // sprawdzamy czy dany token jest zgodny z tym co wie serwer
+                ValidIssuer = authenticationSettings.JwtIssuer, // wydawca tokenu
+                ValidAudience = authenticationSettings.JwtIssuer, // jakie podmioty mog¹ u¿ywaæ tego tokenu
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)), // klucz prywatny wygenerowany
+                // na podstawie authenticationSettings.JwtKey
+            };
+        });
 
         builder.Services.AddControllers().AddFluentValidation();
         builder.Services.AddDbContext<RestaurantDbContext>();
@@ -61,6 +87,7 @@ internal class Program
         }
         app.UseMiddleware<ErrorHandlingMiddleware>();
         app.UseMiddleware<RequestTimeMiddleware>();
+        app.UseAuthentication();
 
         app.UseHttpsRedirection();
 

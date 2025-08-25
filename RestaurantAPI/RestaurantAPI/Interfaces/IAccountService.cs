@@ -7,5 +7,6 @@ namespace RestaurantAPI.Interfaces
     {
         void RegisterUser(RegisterUserDto dto);
         string FunkcjaHashujaca(User user, string password);
+        string GenerateJwt(LoginDto dto);
     }
 }

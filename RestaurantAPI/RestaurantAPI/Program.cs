@@ -58,6 +58,7 @@ internal class Program
         builder.Services.AddScoped<IValidator<CreateRestaurantDto>, CreateRestaurantValidator>();
         builder.Services.AddScoped<IValidator<CreateDishDto>, CreateDishValidator>();
         builder.Services.AddScoped<IValidator<UpdateRestaurantDto>, UpdateRestaurantValidator>();
+        builder.Services.AddScoped<IValidator<LoginDto>, LoginValidator>();
         builder.Services.AddSwaggerGen();
 
         builder.UseNLog();

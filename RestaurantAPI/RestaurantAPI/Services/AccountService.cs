@@ -39,13 +39,7 @@ namespace RestaurantAPI.Services
         {
             var user = _dbContext.Users
                 .Include(x => x.Role)
-                .FirstOrDefault(x => x.Email == dto.Email);
-
-            if (user == null)
-            {
-                throw new BadRequestException("Niepoprawny adres e-mail lub hasło");
-            }
-
+                .FirstOrDefault(x => x.Email == dto.Email) ?? throw new BadRequestException("Niepoprawny adres e-mail lub hasło");
             var res = _passwordHasher.VerifyHashedPassword(user, user.PassworldHash, dto.Password);
 
             if(res == PasswordVerificationResult.Failed)
@@ -55,12 +49,19 @@ namespace RestaurantAPI.Services
 
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
-                new Claim(ClaimTypes.Role, $"{user.Role}"),
-                new Claim("DateOfBirth", user.DateOfBirth.Value.ToString("yyyy-MM-dd")),
-                new Claim("Nationality", user.Nationality)
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
+                new(ClaimTypes.Role, $"{user.Role}"),
+                new("DateOfBirth", user.DateOfBirth.Value.ToString("yyyy-MM-dd")),
             };
+
+            if (!string.IsNullOrEmpty(user.Nationality))
+            {
+                claims.Add
+                    (
+                        new Claim("Nationality", user.Nationality)
+                    );
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.JwtKey));
             // Przekazaliśmy klucz prywatny i wybraliśmy algorytm hashowania SHA256

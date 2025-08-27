@@ -47,6 +47,19 @@ internal class Program
             };
         });
 
+        builder.Services.AddAuthorization(option =>
+        {
+            option.AddPolicy("HasNationality", // Nazwa opcji konfiguracji
+                builder => builder.RequireClaim("Nationality", "Polish", "German")); // drugi parametr to warunki
+            /* --------------------------------------------------------------------------
+             * Sprawdzamy czy User ma jak¹œ narodowoœæ
+             * W warunkach wywo³ujemy RequireClaim na builder
+             * za jego pomoc¹ po nazwie sprawdzamy czy dany Claim istnieje w tokenie JWT
+             * "Polish", "German" to wartoœci dodatkowe jakie ten claim musi mieæ
+             * --------------------------------------------------------------------------
+             */
+        });
+
         builder.Services.AddControllers().AddFluentValidation();
         builder.Services.AddDbContext<RestaurantDbContext>();
         builder.Services.AddScoped<RestaurantSeeder>();
@@ -79,11 +92,11 @@ internal class Program
             try
             {
                 var seeder = services.GetRequiredService<RestaurantSeeder>();
-                seeder.Seed(); // tutaj wywo³ujesz Seed()
+                seeder.Seed(); // wywo³uje Seed()
             }
             catch (Exception ex)
             {
-                // logowanie b³êdów, jeœli chcesz
+                // logowanie b³êdów
                 Console.WriteLine($"B³¹d podczas seedowania danych: {ex.Message}");
             }
         }

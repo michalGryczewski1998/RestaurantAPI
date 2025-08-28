@@ -1,9 +1,11 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using NLog.Web;
 using RestaurantAPI.Authentication;
+using RestaurantAPI.Authorization;
 using RestaurantAPI.Interfaces;
 using RestaurantAPI.Middleware;
 using RestaurantAPI.Model.DatabaseConnection;
@@ -58,8 +60,12 @@ internal class Program
              * "Polish", "German" to wartoœci dodatkowe jakie ten claim musi mieæ
              * --------------------------------------------------------------------------
              */
+
+            // Walidacja wieku u¿ytkownika
+            option.AddPolicy("Atleast20", builder => builder.AddRequirements(new MinimumAgeRequirement(20)));
         });
 
+        builder.Services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
         builder.Services.AddControllers().AddFluentValidation();
         builder.Services.AddDbContext<RestaurantDbContext>();
         builder.Services.AddScoped<RestaurantSeeder>();

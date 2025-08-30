@@ -1,4 +1,5 @@
 ﻿using RestaurantAPI.Model.Models;
+using System.Security.Claims;
 
 namespace RestaurantAPI.Interfaces
 {
@@ -6,8 +7,8 @@ namespace RestaurantAPI.Interfaces
     {
         public RestaurantDto GetById(int id);
         public IEnumerable<RestaurantDto> GetAll();
-        public int Create(CreateRestaurantDto dto);
-        public void Delete(int id);
-        public void Update(UpdateRestaurantDto resraurant, int id);
+        public int Create(CreateRestaurantDto dto, int userId);
+        public void Delete(int id, ClaimsPrincipal user);
+        public void Update(UpdateRestaurantDto resraurant, int id, ClaimsPrincipal user);
     }
 }

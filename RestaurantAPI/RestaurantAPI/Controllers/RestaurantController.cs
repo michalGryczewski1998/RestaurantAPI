@@ -9,6 +9,7 @@ using RestaurantAPI.Model.DatabaseConnection;
 using RestaurantAPI.Model.Entities;
 using RestaurantAPI.Model.Models;
 using System.Runtime.InteropServices;
+using System.Security.Claims;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -33,7 +34,7 @@ namespace RestaurantAPI.Controllers
         [HttpPut("update/{Id}")]
         public ActionResult Update([FromBody] UpdateRestaurantDto resraurant, [FromRoute] int Id)
         {
-            _restaurantService.Update(resraurant, Id);
+            _restaurantService.Update(resraurant, Id, User);
 
              return Ok();
         }
@@ -41,16 +42,17 @@ namespace RestaurantAPI.Controllers
         [HttpDelete("{Id}")]
         public ActionResult Delete([FromRoute] int Id)
         {
-            _restaurantService.Delete(Id);
+            _restaurantService.Delete(Id, User);
 
-            return NotFound();
+            return NotFound($"Usunięto restaurację o {Id}");
         }
 
         [HttpPost("")]
-        [Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin, Manager, User")]
         public ActionResult CreateRestaurant([FromBody] CreateRestaurantDto dto) 
         {
-            var resId = _restaurantService.Create(dto);
+            var userId = int.Parse(User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            var resId = _restaurantService.Create(dto, userId);
 
             return Created($"/api/restaurant/{resId}", null);
         }

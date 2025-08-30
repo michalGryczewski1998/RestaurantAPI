@@ -51,7 +51,7 @@ namespace RestaurantAPI.Services
             {
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
-                new(ClaimTypes.Role, $"{user.Role}"),
+                new(ClaimTypes.Role, $"{user.Role.Name}"),
                 new("DateOfBirth", user.DateOfBirth.Value.ToString("yyyy-MM-dd")),
             };
 

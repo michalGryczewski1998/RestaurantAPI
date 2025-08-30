@@ -11,6 +11,8 @@ namespace RestaurantAPI.Model.Entities
         public bool HasDelivery { get; set; }
         public string ContactEmail { get; set; } = default!;    
         public string ContactNumber { get; set; } = default!;
+        public int? CreatedById { get; set; }
+        public virtual User CreatedBy { get; set; }
         public int AdressId { get; set; }
         public virtual Address Adress { get; set; }
         public virtual List<Dish> Dishes { get; set; }

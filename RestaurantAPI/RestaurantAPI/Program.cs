@@ -87,6 +87,8 @@ internal class Program
         builder.Services.AddScoped<IDishService, DishService>();
         builder.Services.AddScoped<IAccountService, AccountService>();
         builder.Services.AddScoped<IWalidacjaUzytkownika, RegisterUserDtoValidator>();
+        builder.Services.AddScoped<IUserContextService, UserContextService>();
+        builder.Services.AddHttpContextAccessor();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

@@ -18,16 +18,18 @@ namespace RestaurantAPI.Services
         private readonly IMapper _mapper;
         private readonly ILogger<RestaurantService> _logger;
         private readonly IAuthorizationService _authorizationService;
+        private readonly IUserContextService _userContext;
 
-        public RestaurantService(RestaurantDbContext dbContext, IMapper mapper, ILogger<RestaurantService> logger, IAuthorizationService authorizationService)
+        public RestaurantService(RestaurantDbContext dbContext, IMapper mapper, ILogger<RestaurantService> logger, IAuthorizationService authorizationService, IUserContextService userContext)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _logger = logger;
             _authorizationService = authorizationService;
+            _userContext = userContext;
         }
 
-        public void Delete(int id, ClaimsPrincipal user)
+        public void Delete(int id)
         {
             _logger.LogWarning($"Restauracja z ID {id} wywołanie metody DELETE");
             var restaurant = _dbContext
@@ -36,7 +38,7 @@ namespace RestaurantAPI.Services
 
             if (restaurant == null) throw new NotFoundException($"Nie znaleziono zasobu o ID: {id}");
 
-            var autherizationRes = _authorizationService.AuthorizeAsync(user, restaurant,
+            var autherizationRes = _authorizationService.AuthorizeAsync(_userContext.User, restaurant,
                 new ResourceOperationRequirement(ResourceOperation.Delete)).Result;
 
             if (!autherizationRes.Succeeded)
@@ -76,12 +78,12 @@ namespace RestaurantAPI.Services
             return restaurantsDto;
         }
 
-        public int Create(CreateRestaurantDto dto, int userId)
+        public int Create(CreateRestaurantDto dto)
         {
             _logger.LogWarning($"Wywołanie metody Create");
 
             var restaurant = _mapper.Map<Restaurant>(dto);
-            restaurant.CreatedById = userId;
+            restaurant.CreatedById = _userContext.GetUserId;
             _dbContext.Restaurants.Add(restaurant);
             _dbContext.SaveChanges();
 
@@ -90,7 +92,7 @@ namespace RestaurantAPI.Services
             return restaurant.Id;
         }
 
-        public void Update(UpdateRestaurantDto resraurantRequest, int id, ClaimsPrincipal user)
+        public void Update(UpdateRestaurantDto resraurantRequest, int id)
         {
             _logger.LogWarning($"Wywołanie metody Update dla restauracji {id}");
 
@@ -100,7 +102,7 @@ namespace RestaurantAPI.Services
 
             if (restaurant == null) throw new NotFoundException($"Nie znaleziono zasobu o ID: {id}");
 
-            var autherizationRes = _authorizationService.AuthorizeAsync(user, restaurant, 
+            var autherizationRes = _authorizationService.AuthorizeAsync(_userContext.User, restaurant, 
                 new ResourceOperationRequirement(ResourceOperation.Update)).Result;
 
             if (!autherizationRes.Succeeded)

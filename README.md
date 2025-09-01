@@ -15,9 +15,9 @@
   <br><hr>
   Sekcja 7: Autentykacja użytkowników
   <br><hr>
-  Sekcja 8: -
+  Sekcja 8: Autoryzacja
   <br><hr>
-  Sekcja 9: -
+  Sekcja 9: Paginacja *
   <br><hr>
   Sekcja 10: -
   <br><hr>

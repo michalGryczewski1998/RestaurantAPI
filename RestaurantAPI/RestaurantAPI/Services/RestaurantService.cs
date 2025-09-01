@@ -65,11 +65,11 @@ namespace RestaurantAPI.Services
             return res;
         }
 
-        public IEnumerable<RestaurantDto> GetAll()
+        public IEnumerable<RestaurantDto> GetAll(string? searchPhrase)
         {
             _logger.LogWarning($"Wywołanie metody GetAll");
 
-            var restaurants = GetAllRestaurants();
+            var restaurants = GetAllRestaurants(searchPhrase);
 
             var restaurantsDto = _mapper.Map<List<RestaurantDto>>(restaurants);
 
@@ -132,12 +132,17 @@ namespace RestaurantAPI.Services
             return restaurants;
         }
 
-        private List<Restaurant>? GetAllRestaurants()
+        private List<Restaurant>? GetAllRestaurants(string? searchPhrase)
         {
             var restaurants = _dbContext
                 .Restaurants
                 .Include(x => x.Adress)
                 .Include(x => x.Dishes)
+                // IsNullOrEmpty(searchPhrase) sprawi, że jeśli searchPhrase jest null lub puste to
+                // warunek zawsze true, więc zwróci mi i tak wszystkie rekordy
+                .Where(x => string.IsNullOrEmpty(searchPhrase) ||
+                    x.Name.ToLower().Contains(searchPhrase.ToLower()) ||
+                    x.Description.ToLower().Contains(searchPhrase.ToLower()))
                 .ToList();
 
             if (restaurants == null)

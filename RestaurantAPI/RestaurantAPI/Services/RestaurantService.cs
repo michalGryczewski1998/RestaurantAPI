@@ -65,17 +65,17 @@ namespace RestaurantAPI.Services
             return res;
         }
 
-        public IEnumerable<RestaurantDto> GetAll(string? searchPhrase)
+        public PageResult<RestaurantDto> GetAll(RestaurantQuery query)
         {
             _logger.LogWarning($"Wywołanie metody GetAll");
 
-            var restaurants = GetAllRestaurants(searchPhrase);
+            var restaurants = GetAllRestaurants(query, out int totalCount);
 
             var restaurantsDto = _mapper.Map<List<RestaurantDto>>(restaurants);
-
+            var pageResult = new PageResult<RestaurantDto>(restaurantsDto, totalCount, query.PageSize.Value, query.PageSize.Value);
             _logger.LogWarning($"Wywołanie metody GetAll zakończone pomyślnie");
 
-            return restaurantsDto;
+            return pageResult;
         }
 
         public int Create(CreateRestaurantDto dto)
@@ -132,18 +132,24 @@ namespace RestaurantAPI.Services
             return restaurants;
         }
 
-        private List<Restaurant>? GetAllRestaurants(string? searchPhrase)
+        private List<Restaurant>? GetAllRestaurants(RestaurantQuery query, out int totalCount)
         {
-            var restaurants = _dbContext
+            var baseQuery = _dbContext
                 .Restaurants
                 .Include(x => x.Adress)
                 .Include(x => x.Dishes)
                 // IsNullOrEmpty(searchPhrase) sprawi, że jeśli searchPhrase jest null lub puste to
                 // warunek zawsze true, więc zwróci mi i tak wszystkie rekordy
-                .Where(x => string.IsNullOrEmpty(searchPhrase) ||
-                    x.Name.ToLower().Contains(searchPhrase.ToLower()) ||
-                    x.Description.ToLower().Contains(searchPhrase.ToLower()))
+                .Where(x => string.IsNullOrEmpty(query.SearchPhrase) ||
+                    x.Name.ToLower().Contains(query.SearchPhrase.ToLower()) ||
+                    x.Description.ToLower().Contains(query.SearchPhrase.ToLower()));
+
+            var restaurants = baseQuery
+                .Skip(query.PageSize.Value * (query.PageNumber.Value - 1))
+                .Take(query.PageSize.Value)
                 .ToList();
+
+            totalCount = baseQuery.Count();
 
             if (restaurants == null)
             {

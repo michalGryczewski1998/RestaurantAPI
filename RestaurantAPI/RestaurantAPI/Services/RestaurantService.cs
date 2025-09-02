@@ -72,7 +72,7 @@ namespace RestaurantAPI.Services
             var restaurants = GetAllRestaurants(query, out int totalCount);
 
             var restaurantsDto = _mapper.Map<List<RestaurantDto>>(restaurants);
-            var pageResult = new PageResult<RestaurantDto>(restaurantsDto, totalCount, query.PageSize.Value, query.PageSize.Value);
+            var pageResult = new PageResult<RestaurantDto>(restaurantsDto, totalCount, query.PageSize, query.PageSize);
             _logger.LogWarning($"Wywołanie metody GetAll zakończone pomyślnie");
 
             return pageResult;
@@ -145,8 +145,8 @@ namespace RestaurantAPI.Services
                     x.Description.ToLower().Contains(query.SearchPhrase.ToLower()));
 
             var restaurants = baseQuery
-                .Skip(query.PageSize.Value * (query.PageNumber.Value - 1))
-                .Take(query.PageSize.Value)
+                .Skip(query.PageSize * (query.PageNumber - 1))
+                .Take(query.PageSize)
                 .ToList();
 
             totalCount = baseQuery.Count();

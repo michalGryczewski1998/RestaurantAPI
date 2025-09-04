@@ -81,6 +81,18 @@ internal class Program
         builder.Services.AddScoped<IValidator<LoginDto>, LoginValidator>();
         builder.Services.AddScoped<IValidator<RestaurantQuery>, RestaurantQueryValidator>();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("FrontendClient", x =>
+            {
+                x.AllowAnyMethod()
+                    .AllowAnyHeader()
+                    // .AllowAnyOrigin() <- zezwala dostêp jakiejkolwiek aplikacji
+                    // natomiast WithOrigins przekazujemy adres konkretnej aplikacji 
+                    // która mo¿e u¿ywaæ API
+                    .WithOrigins(builder.Configuration["AllowedOrigins"]);
+            });
+        });
 
         builder.UseNLog();
 
@@ -94,6 +106,8 @@ internal class Program
 
         // Configure the HTTP request pipeline.
 
+        // u¿ywamy nasz¹ politykê dla CORS
+        app.UseCors("FrontendClient");
         // Tworzymy scope (zakres us³ug) dla rêcznego pobrania serwisów
         using (var scope = app.Services.CreateScope())
         {

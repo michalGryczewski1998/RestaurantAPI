@@ -106,6 +106,8 @@ internal class Program
 
         // Configure the HTTP request pipeline.
 
+        // Pliki statyczne
+        app.UseStaticFiles();
         // u¿ywamy nasz¹ politykê dla CORS
         app.UseCors("FrontendClient");
         // Tworzymy scope (zakres us³ug) dla rêcznego pobrania serwisów

@@ -30,5 +30,24 @@ namespace RestaurantAPI.Controllers
             /// Przyjmuje ona 3 paramtery plik jako tablice bajtów, typ pliku, nazwa pliku
             return File(fileContents, contentType , filename);
         }
+
+        [HttpPost]
+        public IActionResult Upload([FromForm] IFormFile file)
+        {
+            if (file != null && file.Length > 0)
+            {
+                var rootPath = Directory.GetCurrentDirectory();
+                var fullPath = $"{rootPath}/PrivateFiles/{file.FileName}";
+
+                using(var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
+                return Ok();
+            }
+
+            return BadRequest();
+        }
     }
 }

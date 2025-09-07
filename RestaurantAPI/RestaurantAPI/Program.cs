@@ -106,6 +106,8 @@ internal class Program
 
         // Configure the HTTP request pipeline.
 
+        // Middleware do caschowania
+        app.UseResponseCaching();
         // Pliki statyczne
         app.UseStaticFiles();
         // u¿ywamy nasz¹ politykê dla CORS

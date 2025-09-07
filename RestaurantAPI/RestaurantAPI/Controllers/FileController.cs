@@ -8,6 +8,8 @@ namespace RestaurantAPI.Controllers
     [Authorize]
     public class FileController : ControllerBase
     {
+        [HttpGet]
+        [ResponseCache(Duration = 1200, VaryByQueryKeys = new[] {"fileName"})]
         public IActionResult GetFile([FromQuery] string filename)
         {
             // sciezka bazowa do projektu

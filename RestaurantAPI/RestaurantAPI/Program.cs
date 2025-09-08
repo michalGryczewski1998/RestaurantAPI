@@ -16,6 +16,7 @@ using RestaurantAPI.Model.Validators;
 using RestaurantAPI.Services;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 
 internal class Program
 {
@@ -65,9 +66,11 @@ internal class Program
             option.AddPolicy("Atleast20", builder => builder.AddRequirements(new MinimumAgeRequirement(20)));
         });
 
-        builder.Services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
-        builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
-        builder.Services.AddControllers().AddFluentValidation();
+        builder.Services.AddControllers()
+            .AddFluentValidation()
+            .AddJsonOptions(op => 
+                op.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
         builder.Services.AddDbContext<RestaurantDbContext>();
         builder.Services.AddScoped<RestaurantSeeder>();
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -80,6 +83,8 @@ internal class Program
         builder.Services.AddScoped<IValidator<UpdateRestaurantDto>, UpdateRestaurantValidator>();
         builder.Services.AddScoped<IValidator<LoginDto>, LoginValidator>();
         builder.Services.AddScoped<IValidator<RestaurantQuery>, RestaurantQueryValidator>();
+        builder.Services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
+        builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
         builder.Services.AddSwaggerGen();
         builder.Services.AddCors(options =>
         {

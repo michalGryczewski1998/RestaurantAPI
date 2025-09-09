@@ -17,21 +17,8 @@
   <br><hr>
   Sekcja 8: Autoryzacja
   <br><hr>
-  Sekcja 9: Paginacja *
+  Sekcja 9: Paginacja 
   <br><hr>
-  Sekcja 10: -
+  Sekcja 10: - Wszechstronne API
   <br><hr>
-  Sekcja 11: -
-  <br><hr>
-  Sekcja 12: -
-  <br><hr>
-  Sekcja 13: -
-  <br><hr>
-  Sekcja 14: -
-  <br><hr>
-  Sekcja 15: -
-  <br><hr>
-  Sekcja 16: -
-  <br><hr>
-  Sekcja 17: -
-</div>
+  Sekcja 11: - Wdrożenie API na chmure AZURE
